@@ -1,0 +1,43 @@
+debug: true
+
+springdoc:
+  swagger-ui:
+    disable-swagger-default-url: true
+    path: /doc
+
+server:
+  port: 8080
+  
+ceoak:
+  codigo-padrao: 84d13166-39cf-11ed-9067-706979ac0e21
+  vinculo-aluno: 1
+  situacao-matriculado: 1
+  
+arquivo:
+  upload-dir: F:/AmbienteDesenvolvimento/AmbienteCEOAKEducacional/GKEducacional/UPLOAD/	
+ 
+
+spring:
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5433/bd_ceoak_v2
+    username: postgres
+    password: postgres
+  jpa:
+    hibernate:
+      ddl-auto: none
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+      show-sql: true
+  servlet:
+    multipart:
+      enabled: true
+      file-size-threshold: 2KB
+      max-file-size: 200MB
+      max-request-size: 15MB
+        
+        
+
+
+      

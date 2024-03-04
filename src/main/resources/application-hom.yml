@@ -1,0 +1,52 @@
+springdoc:
+  swagger-ui:
+    disable-swagger-default-url: true
+    path: /doc
+    
+logging:
+  file:
+    path: /var/log/globalkardec/
+    
+ceoak:
+  codigo-padrao: 84d13166-39cf-11ed-9067-706979ac0e21
+  vinculo-aluno: 1
+  situacao-matriculado: 1
+  
+arquivo:
+  upload-dir: /var/arquivos/	
+  
+spring:
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: 
+    username: 
+    password: 
+  jpa:
+    hibernate:
+      ddl-auto: none
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+      show-sql: false
+  servlet:
+    multipart:
+      enabled: true
+      file-size-threshold: 2KB
+      max-file-size: 200MB
+      max-request-size: 15MB
+ 
+  threads:
+    virtual:
+      enabled: true    
+      
+
+server:
+  port: 443
+  ssl:
+    enabled: true
+    key-store: classpath:ssl/live/ceoak-back.brazilsouth.cloudapp.azure.com/keystore.p12
+    key-alias: ceoak
+    key-store-password: "*001Senha"
+    key-store-type: PKCS12
+      
+             
