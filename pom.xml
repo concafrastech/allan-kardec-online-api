@@ -67,7 +67,7 @@
 			<optional>true</optional>
 		</dependency>
 
-		<!--MySQL 
+		<!--MySQL
 		<dependency>
 			<groupId>com.mysql</groupId>
 			<artifactId>mysql-connector-j</artifactId>
@@ -95,7 +95,7 @@
 			<groupId>org.flywaydb</groupId>
 			<artifactId>flyway-core</artifactId>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.flywaydb</groupId>
 			<artifactId>flyway-database-postgresql</artifactId>
@@ -116,7 +116,28 @@
 		</dependency>
 	</dependencies>
 
+	<profiles>
+		<profile>
+			<id>desenv</id>
+			<properties>
+				<jdbc.url>localhost:5433</jdbc.url>
+			</properties>
+		</profile>
+		<profile>
+			<id>docker</id>
+			<properties>
+				<jdbc.url>db:5432</jdbc.url>
+			</properties>
+		</profile>
+	</profiles>
+
 	<build>
+		<!-- <resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<filtering>true</filtering>
+			</resource>
+		</resources> -->
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>

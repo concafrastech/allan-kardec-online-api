@@ -10,11 +10,13 @@ services:
     restart: always
     shm_size: 128mb
     environment:
-      POSTGRES_PASSWORD: letmein
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: bd_ceoak_v2
     volumes:
       - dbdata:/var/lib/postgresql
     ports:
-      - "5433:5432"
+      - "5432:5432"
 volumes:
   dbdata:
     driver: local
