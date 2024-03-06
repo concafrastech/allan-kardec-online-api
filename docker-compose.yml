@@ -1,4 +1,4 @@
-version: "3.8"
+version: "2"
 services:
   service:
     build:
@@ -14,13 +14,13 @@ services:
       POSTGRES_PASSWORD: postgres
       POSTGRES_DB: bd_ceoak_v2
     volumes:
-      - dbdata:/var/lib/postgresql
+      - $HOME/www/data/postgres-data:/var/lib/postgresql
     ports:
-      - "5432:5432"
-volumes:
-  dbdata:
-    driver: local
-    driver_opts:
-      type: "none"
-      o: "bind"
-      device: "/home/vinic/www/data/postgres-data"
+      - "5433:5432"
+# volumes:
+#   dbdata:
+#     driver: local
+#     driver_opts:
+#       type: "none"
+#       o: "bind"
+#       device: "$HOME/www/data/postgres-data"
