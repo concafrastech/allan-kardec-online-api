@@ -122,6 +122,9 @@
 			<properties>
 				<jdbc.url>localhost:5433</jdbc.url>
 			</properties>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
 		</profile>
 		<profile>
 			<id>docker</id>
