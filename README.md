@@ -2,8 +2,6 @@
 
 Este projeto é destinado para o desenvolvimento do backend para o Centro Espírita Allan Kardec Online.
 
----
-
 ## Colocando no ar
 
 Para subir o projeto localmente em containers é necessário ter o Docker instalado.
@@ -15,8 +13,6 @@ Para subir o projeto localmente em containers é necessário ter o Docker instal
 ##### Descer o projeto
 
 `docker compose down`
-
----
 
 ## Board do Projeto
 
