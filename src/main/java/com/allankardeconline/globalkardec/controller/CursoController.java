@@ -24,7 +24,6 @@ import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/gk/curso")
-@CrossOrigin(origins = "http://localhost:4200")
 @Tag(name = "Curso", description = "Endpoints para gerenciar cursos")
 public class CursoController {
 
@@ -113,10 +112,7 @@ public class CursoController {
 			@ApiResponse
 	})
 	public String envioArquivo(@RequestParam("file") MultipartFile file) {
-
-		var filename = uploadService.gravarArquivo(file);
-
-		return filename;
+		return uploadService.gravarArquivo(file);
 	}
 
 	@PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
