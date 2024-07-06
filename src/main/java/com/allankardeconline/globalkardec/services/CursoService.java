@@ -22,138 +22,82 @@ import com.allankardeconline.globalkardec.repository.TipoCursoRepository;
 @Service
 public class CursoService {
 
-	private Logger log = Logger.getLogger(CursoService.class.getName());
+    private Logger log = Logger.getLogger(CursoService.class.getName());
 
-	@Autowired
-	CursoRepository repository;
+    @Autowired
+    CursoRepository repository;
 
-	@Autowired
-	CursoRepositoryCustomizado repositoryCustomizado;
+    @Autowired
+    CursoRepositoryCustomizado repositoryCustomizado;
 
-	@Autowired
-	IdiomaRepository idiomaRepository;
+    @Autowired
+    IdiomaRepository idiomaRepository;
 
-	@Autowired
-	InstitutoRepository institutoRepository;
+    @Autowired
+    InstitutoRepository institutoRepository;
 
-	@Autowired
-	TipoCursoRepository tipoCursoRepository;
+    @Autowired
+    TipoCursoRepository tipoCursoRepository;
 
-	public Page<CursoDTO> pesquisar(String curso, String idioma,
-			String instituto, Pageable paginacao) {
-		
-		var page = repositoryCustomizado.pesquisar(curso, idioma, instituto, paginacao);
-		var pagesDTO = page
-				.map(objeto -> DozerMapper.parseObject(objeto, CursoDTO.class));
-		return pagesDTO;
+    public Page<CursoDTO> pesquisar(String curso, String idioma, String instituto, Pageable paginacao) {
+        var page = repositoryCustomizado.pesquisar(curso, idioma, instituto, paginacao);
 
+        return page.map(objeto -> DozerMapper.parseObject(objeto, CursoDTO.class));
+    }
 
+    public Page<CursoConsultaDTO> obterTodos(Pageable paginacao) {
+        var page = repository.findAll(paginacao);
 
-	}
+        return page.map(objeto -> DozerMapper.parseObject(objeto, CursoConsultaDTO.class));
+    }
 
-	public Page<CursoConsultaDTO> obterTodos(Pageable paginacao) {
-		var page = repository.findAll(paginacao);
-		var pagesDTO = page
-				.map(objeto -> DozerMapper.parseObject(objeto, CursoConsultaDTO.class));
-		return pagesDTO;
-	}
+    public Page<CursoConsultaDTO> obterPorNome(Pageable paginacao, String nome) {
+        var page = repository.findByNomeLikeIgnoreCase(nome, paginacao);
 
-	public Page<CursoConsultaDTO> obterPorNome(Pageable paginacao, String nome) {
+        return page.map(objeto -> DozerMapper.parseObject(objeto, CursoConsultaDTO.class));
+    }
 
-		var page = repository.findByNomeLikeIgnoreCase(nome, paginacao);
+    public CursoDTO obterPorUuid(UUID id) {
+        Curso entity = repository.findByUuid(id).orElseThrow(() -> new RecursoNaoEncontradoException("Curso não encontrado para o id " + id));
 
-		var pagesDTO = page
-				.map(objeto -> DozerMapper.parseObject(objeto, CursoConsultaDTO.class));
-		return pagesDTO;
+        return DozerMapper.parseObject(entity, CursoDTO.class);
+    }
 
-	}
+    public CursoDTO inserir(CursoDTO curso) {
+        curso.setUuid(UUID.randomUUID());
+        var idioma = idiomaRepository.findByUuid(curso.getIdioma()).orElseThrow(() -> new RecursoNaoEncontradoException("Idioma não encontrado para o uuid " + curso.getIdioma()));
+        var instituto = institutoRepository.findByUuid(curso.getInstituto()).orElseThrow(() -> new RecursoNaoEncontradoException("Instituto não encontrado para o uuid " + curso.getInstituto()));
+        var tipoCurso = tipoCursoRepository.findById(curso.getTipoCurso()).orElseThrow(() -> new RecursoNaoEncontradoException("TipoCurso não encontrado para o id " + curso.getTipoCurso()));
+        var entity = DozerMapper.parseObject(curso, Curso.class);
 
-	public CursoDTO obterPorUuid(UUID id) {
+        entity.setIdioma(idioma);
+        entity.setInstituto(instituto);
+        entity.setTipoCurso(tipoCurso);
 
-		Curso entity = repository.findByUuid(id)
-				.orElseThrow(() -> new RecursoNaoEncontradoException(
-						"Curso não encontrado para o id " + id));
+        return DozerMapper.parseObject(repository.save(entity), CursoDTO.class);
+    }
 
-		return DozerMapper.parseObject(entity, CursoDTO.class);
+    public CursoDTO alterar(CursoDTO curso) {
+        Curso entity = repository.findByUuid(curso.getUuid()).orElseThrow(() -> new RecursoNaoEncontradoException("Curso não encontrado para o id " + curso.getUuid()));
+        var idioma = idiomaRepository.findByUuid(curso.getIdioma()).orElseThrow(() -> new RecursoNaoEncontradoException("Idioma não encontrado para o uuid " + curso.getIdioma()));
+        var instituto = institutoRepository.findByUuid(curso.getInstituto()).orElseThrow(() -> new RecursoNaoEncontradoException("Instituto não encontrado para o uuid " + curso.getInstituto()));
+        var tipoCurso = tipoCursoRepository.findById(curso.getTipoCurso()).orElseThrow(() -> new RecursoNaoEncontradoException("TipoCurso não encontrado para o id " + curso.getTipoCurso()));
 
-	}
+        entity.setCapaCurso(curso.getCapaCurso());
+        entity.setIdioma(idioma);
+        entity.setInstituto(instituto);
+        entity.setNome(curso.getNome());
+        entity.setTipoCurso(tipoCurso);
+        entity.setDescricao(curso.getDescricao());
+        entity.setModalidadeEnsino(curso.getModalidadeEnsino());
 
-	public CursoDTO inserir(CursoDTO curso) {
+        return DozerMapper.parseObject(repository.save(entity), CursoDTO.class);
+    }
 
-		curso.setUuid(UUID.randomUUID());
+    public void excluir(UUID id) {
+        Curso entity = repository.findByUuid(id).orElseThrow(() -> new RecursoNaoEncontradoException("Objeto não encontrado para o id " + id));
 
-		var idioma = idiomaRepository.findByUuid(curso.getIdioma())
-				.orElseThrow(() -> new RecursoNaoEncontradoException(
-						"Idioma não encontrado para o uuid "
-								+ curso.getIdioma()));
-
-		var instituto = institutoRepository
-				.findByUuid(curso.getInstituto())
-				.orElseThrow(() -> new RecursoNaoEncontradoException(
-						"Instituto não encontrado para o uuid "
-								+ curso.getInstituto()));
-
-		var tipoCurso = tipoCursoRepository.findById(curso.getTipoCurso())
-				.orElseThrow(() -> new RecursoNaoEncontradoException(
-						"TipoCurso não encontrado para o id "
-								+ curso.getTipoCurso()));
-
-		var entity = DozerMapper.parseObject(curso, Curso.class);
-
-		entity.setIdioma(idioma);
-		entity.setInstituto(instituto);
-		entity.setTipoCurso(tipoCurso);
-
-		var dto = DozerMapper.parseObject(repository.save(entity),
-				CursoDTO.class);
-
-		return dto;
-
-	}
-
-	public CursoDTO alterar(CursoDTO curso) {
-
-		Curso entity = repository.findByUuid(curso.getUuid())
-				.orElseThrow(() -> new RecursoNaoEncontradoException(
-						"Curso não encontrado para o id " + curso.getUuid()));
-
-		var idioma = idiomaRepository.findByUuid(curso.getIdioma())
-				.orElseThrow(() -> new RecursoNaoEncontradoException(
-						"Idioma não encontrado para o uuid "
-								+ curso.getIdioma()));
-
-		var instituto = institutoRepository
-				.findByUuid(curso.getInstituto())
-				.orElseThrow(() -> new RecursoNaoEncontradoException(
-						"Instituto não encontrado para o uuid "
-								+ curso.getInstituto()));
-
-		var tipoCurso = tipoCursoRepository.findById(curso.getTipoCurso())
-				.orElseThrow(() -> new RecursoNaoEncontradoException(
-						"TipoCurso não encontrado para o id "
-								+ curso.getTipoCurso()));
-
-		entity.setCapaCurso(curso.getCapaCurso());
-		entity.setIdioma(idioma);
-		entity.setInstituto(instituto);
-		entity.setNome(curso.getNome());
-		entity.setTipoCurso(tipoCurso);
-		entity.setDescricao(curso.getDescricao());
-		entity.setModalidadeEnsino(curso.getModalidadeEnsino());
-
-		var vo = DozerMapper.parseObject(repository.save(entity),
-				CursoDTO.class);
-
-		return vo;
-
-	}
-
-	public void excluir(UUID id) {
-		Curso entity = repository.findByUuid(id)
-				.orElseThrow(() -> new RecursoNaoEncontradoException(
-						"Objeto não encontrado para o id " + id));
-
-		repository.delete(entity);
-	}
+        repository.delete(entity);
+    }
 
 }
