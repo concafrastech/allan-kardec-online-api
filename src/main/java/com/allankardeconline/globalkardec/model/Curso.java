@@ -22,151 +22,148 @@ import jakarta.validation.constraints.NotEmpty;
 @Table(schema = "globalkardec", name = "curso")
 public class Curso implements Serializable {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 798939850801205590L;
+    private static final long serialVersionUID = 798939850801205590L;
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-	private UUID uuid;
+    private UUID uuid;
 
-	@NotEmpty(message = "{campo.nome.obrigatorio}")
-	private String nome;
+    @NotEmpty(message = "{campo.nome.obrigatorio}")
+    private String nome;
 
-	@Column(name = "capa_curso")
-	@NotEmpty(message = "{campo.capa_curso.obrigatorio}")
-	private String capaCurso;
+    @Column(name = "capa_curso")
+    @NotEmpty(message = "{campo.capa_curso.obrigatorio}")
+    private String capaCurso;
 
-	@Column(columnDefinition = "text")
-	private String descricao;
+    @Column(columnDefinition = "text")
+    private String descricao;
 
-	@ManyToOne
-	private Instituto instituto;
+    @ManyToOne
+    private Instituto instituto;
 
-	@JoinColumn(name = "language_id")
-	@ManyToOne
-	private Idioma idioma;
+    @JoinColumn(name = "language_id")
+    @ManyToOne
+    private Idioma idioma;
 
-	@JoinColumn(name = "tipo_curso_id")
-	@ManyToOne
-	private TipoCurso tipoCurso;
+    @JoinColumn(name = "tipo_curso_id")
+    @ManyToOne
+    private TipoCurso tipoCurso;
 
-	@Enumerated
-	private ModalidadeEnsinoEnumerador modalidadeEnsino;
+    @Enumerated
+    private ModalidadeEnsinoEnumerador modalidadeEnsino;
 
-	public Curso() {
+    public Curso() {
 
-	}
+    }
 
-	public Long getId() {
-		return id;
-	}
+    public Long getId() {
+        return id;
+    }
 
-	public void setId(Long id) {
-		this.id = id;
-	}
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-	public UUID getUuid() {
-		return uuid;
-	}
+    public UUID getUuid() {
+        return uuid;
+    }
 
-	public void setUuid(UUID uuid) {
-		this.uuid = uuid;
-	}
+    public void setUuid(UUID uuid) {
+        this.uuid = uuid;
+    }
 
-	public String getNome() {
-		return nome;
-	}
+    public String getNome() {
+        return nome;
+    }
 
-	public void setNome(String nome) {
-		this.nome = nome;
-	}
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
 
-	public String getCapaCurso() {
-		return capaCurso;
-	}
+    public String getCapaCurso() {
+        return capaCurso;
+    }
 
-	public void setCapaCurso(String capaCurso) {
-		this.capaCurso = capaCurso;
-	}
+    public void setCapaCurso(String capaCurso) {
+        this.capaCurso = capaCurso;
+    }
 
-	public String getDescricao() {
-		return descricao;
-	}
+    public String getDescricao() {
+        return descricao;
+    }
 
-	public void setDescricao(String descricao) {
-		this.descricao = descricao;
-	}
+    public void setDescricao(String descricao) {
+        this.descricao = descricao;
+    }
 
-	public Instituto getInstituto() {
-		return instituto;
-	}
+    public Instituto getInstituto() {
+        return instituto;
+    }
 
-	public void setInstituto(Instituto instituto) {
-		this.instituto = instituto;
-	}
+    public void setInstituto(Instituto instituto) {
+        this.instituto = instituto;
+    }
 
-	public Idioma getIdioma() {
-		return idioma;
-	}
+    public Idioma getIdioma() {
+        return idioma;
+    }
 
-	public void setIdioma(Idioma idioma) {
-		this.idioma = idioma;
-	}
+    public void setIdioma(Idioma idioma) {
+        this.idioma = idioma;
+    }
 
-	public TipoCurso getTipoCurso() {
-		return tipoCurso;
-	}
+    public TipoCurso getTipoCurso() {
+        return tipoCurso;
+    }
 
-	public void setTipoCurso(TipoCurso tipoCurso) {
-		this.tipoCurso = tipoCurso;
-	}
+    public void setTipoCurso(TipoCurso tipoCurso) {
+        this.tipoCurso = tipoCurso;
+    }
 
-	public ModalidadeEnsinoEnumerador getModalidadeEnsino() {
-		return modalidadeEnsino;
-	}
+    public ModalidadeEnsinoEnumerador getModalidadeEnsino() {
+        return modalidadeEnsino;
+    }
 
-	public void setModalidadeEnsino(
-			ModalidadeEnsinoEnumerador modalidadeEnsino) {
-		this.modalidadeEnsino = modalidadeEnsino;
-	}
+    public void setModalidadeEnsino(
+            ModalidadeEnsinoEnumerador modalidadeEnsino) {
+        this.modalidadeEnsino = modalidadeEnsino;
+    }
 
-	@Override
-	public String toString() {
-		return "Curso [id=" + id + ", uuid=" + uuid + ", nome=" + nome
-				+ ", capaCurso=" + capaCurso + ", descricao=" + descricao
-				+ ", instituto=" + instituto + ", idioma=" + idioma
-				+ ", tipoCurso=" + tipoCurso + ", modalidadeEnsino="
-				+ modalidadeEnsino + "]";
-	}
+    @Override
+    public String toString() {
+        return "Curso [id=" + id + ", uuid=" + uuid + ", nome=" + nome
+                + ", capaCurso=" + capaCurso + ", descricao=" + descricao
+                + ", instituto=" + instituto + ", idioma=" + idioma
+                + ", tipoCurso=" + tipoCurso + ", modalidadeEnsino="
+                + modalidadeEnsino + "]";
+    }
 
-	@Override
-	public int hashCode() {
-		return Objects.hash(capaCurso, descricao, id, idioma, instituto,
-				modalidadeEnsino, nome, tipoCurso, uuid);
-	}
+    @Override
+    public int hashCode() {
+        return Objects.hash(capaCurso, descricao, id, idioma, instituto,
+                modalidadeEnsino, nome, tipoCurso, uuid);
+    }
 
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Curso other = (Curso) obj;
-		return Objects.equals(capaCurso, other.capaCurso)
-				&& Objects.equals(descricao, other.descricao)
-				&& Objects.equals(id, other.id)
-				&& Objects.equals(idioma, other.idioma)
-				&& Objects.equals(instituto, other.instituto)
-				&& modalidadeEnsino == other.modalidadeEnsino
-				&& Objects.equals(nome, other.nome)
-				&& Objects.equals(tipoCurso, other.tipoCurso)
-				&& Objects.equals(uuid, other.uuid);
-	}
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        Curso other = (Curso) obj;
+        return Objects.equals(capaCurso, other.capaCurso)
+                && Objects.equals(descricao, other.descricao)
+                && Objects.equals(id, other.id)
+                && Objects.equals(idioma, other.idioma)
+                && Objects.equals(instituto, other.instituto)
+                && modalidadeEnsino == other.modalidadeEnsino
+                && Objects.equals(nome, other.nome)
+                && Objects.equals(tipoCurso, other.tipoCurso)
+                && Objects.equals(uuid, other.uuid);
+    }
 
 }
