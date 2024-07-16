@@ -15,7 +15,7 @@ ceoak:
   situacao-frequencia-presente: 1
 
 arquivo:
-  upload-dir: F:/AmbienteDesenvolvimento/AmbienteCEOAKEducacional/GKEducacional/UPLOAD/
+  upload-dir: C:\Users\vinic\www\data\ceoak-educacional\upload
 
 spring:
   datasource:
