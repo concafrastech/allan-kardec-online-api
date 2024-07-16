@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.allankardeconline.globalkardec.dto.FrequenciaAlunoConsultaDTO;
+import com.allankardeconline.globalkardec.dto.FrequenciaAlunoIndividualDTO;
 import com.allankardeconline.globalkardec.dto.FrequenciaAlunoTurmaEncerramentoDTO;
 import com.allankardeconline.globalkardec.dto.ListaFrequenciaAlunoDTO;
 import com.allankardeconline.globalkardec.dto.MatriculadosTurmaFrequenciaDiaDTO;
@@ -43,6 +44,17 @@ public class FrequenciaController {
 	public void registrarFrequencia(
 			@RequestBody @Valid ListaFrequenciaAlunoDTO frequencia) {
 		service.registrarFrequencia(frequencia);
+	}
+
+	@PostMapping(value = "/aluno", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@Operation(summary = "Registro de frequência a partir da matricula e dia calendário", tags = {
+			"Frequência"
+	}, responses = {
+			@ApiResponse
+	})
+	@ResponseStatus(HttpStatus.CREATED)
+	public void registrarFrequenciaPeloAluno(@RequestBody @Valid FrequenciaAlunoIndividualDTO frequencia) {
+		service.registrarFrequenciaPeloAluno(frequencia);
 	}
 
 	@GetMapping(value = "/porCalendario/{uuidCalendario}/{dataAula}", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -80,5 +92,19 @@ public class FrequenciaController {
 			@PathVariable UUID uuidMatricula) {
 
 		return service.obterFrequenciaPorMatricula(uuidMatricula);
+	}
+
+	@GetMapping(value = "/porTurmaEDia/{uuidTurma}/{uuidDiaCalendario}", produces = MediaType.APPLICATION_JSON_VALUE)
+	@Operation(summary = "Lista de frequências por uuid da turma e do dia no calendário", tags = {
+			"Frequência"
+	}, responses = {
+			@ApiResponse
+	})
+	public List<FrequenciaAlunoConsultaDTO> obterFrequenciaAlunoPorTurmaEDia(
+			@PathVariable UUID uuidTurma,
+			@PathVariable UUID uuidDiaCalendario) {
+
+		return service.obterFrequenciasPorTurmaEDia(uuidTurma,
+				uuidDiaCalendario);
 	}
 }

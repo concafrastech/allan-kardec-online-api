@@ -18,5 +18,7 @@ public interface FrequenciaAlunoRepository
 
 	@Query("SELECT o FROM FrequenciaAluno o WHERE o.matricula.uuid = :matricula ORDER BY o.diaAulaCalendario.dataAula ASC")
 	List<FrequenciaAluno> obterFrequenciasPorAluno(UUID matricula);
+	
+
 
 }

@@ -9,7 +9,9 @@ import java.util.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.allankardeconline.config.ConfiguracaoGeralGlobalKardec;
 import com.allankardeconline.globalkardec.dto.FrequenciaAlunoConsultaDTO;
+import com.allankardeconline.globalkardec.dto.FrequenciaAlunoIndividualDTO;
 import com.allankardeconline.globalkardec.dto.FrequenciaAlunoTurmaEncerramentoDTO;
 import com.allankardeconline.globalkardec.dto.ListaFrequenciaAlunoDTO;
 import com.allankardeconline.globalkardec.dto.MatriculadosTurmaFrequenciaDiaDTO;
@@ -24,6 +26,7 @@ import com.allankardeconline.globalkardec.model.categoricos.SituacaoFrequencia;
 import com.allankardeconline.globalkardec.model.visao.FrequenciaAlunoTurmaEncerramentoVisao;
 import com.allankardeconline.globalkardec.model.visao.MatriculadosTurmaFrequenciaDiaVisao;
 import com.allankardeconline.globalkardec.repository.DiaAulaCalendarioRepository;
+import com.allankardeconline.globalkardec.repository.FrequenciaAlunoConsultaRepository;
 import com.allankardeconline.globalkardec.repository.FrequenciaAlunoRepository;
 import com.allankardeconline.globalkardec.repository.FrequenciaAlunoTurmaEncerramentoRepository;
 import com.allankardeconline.globalkardec.repository.MatriculaRepository;
@@ -47,6 +50,9 @@ public class FrequenciaService {
 	FrequenciaAlunoRepository frequenciaAlunoRepository;
 
 	@Autowired
+	FrequenciaAlunoConsultaRepository frequenciaAlunoConsultaRepository;
+
+	@Autowired
 	DiaAulaCalendarioRepository diaAulaCalendarioRepository;
 
 	@Autowired
@@ -54,6 +60,9 @@ public class FrequenciaService {
 
 	@Autowired
 	FrequenciaAlunoTurmaEncerramentoRepository frequenciaAlunoTurmaEncerramentoRepository;
+
+	@Autowired
+	ConfiguracaoGeralGlobalKardec configuracao;
 
 	public List<MatriculadosTurmaFrequenciaDiaDTO> obterFrequenciaMatriculadosPorCalendarioEData(
 			UUID uuidCalendario, String dataAula) {
@@ -122,6 +131,53 @@ public class FrequenciaService {
 
 	}
 
+	@Transactional
+	public void registrarFrequenciaPeloAluno(
+			FrequenciaAlunoIndividualDTO frequenciaDTO) {
+
+		DiaAulaCalendario diaAula = diaAulaCalendarioRepository
+				.findByUuid(frequenciaDTO.getUuidDiaCalendario())
+				.orElseThrow(() -> new RecursoNaoEncontradoException(
+						"DiaAulaCalendario não encontrado para o uuid "
+								+ frequenciaDTO.getUuidDiaCalendario()));
+
+		Matricula matricula = repository
+				.findByUuid(frequenciaDTO.getUuidMatricula())
+				.orElseThrow(() -> new RecursoNaoEncontradoException(
+						"Matricula não encontrada para o uuid "
+								+ frequenciaDTO.getUuidMatricula()));
+
+		SituacaoFrequencia situacao = situacaoFrequenciaRepository
+				.findById(configuracao.getIdSituacaoFrequenciaPresente())
+				.orElseThrow(() -> new RecursoNaoEncontradoException(
+						"SituacaoMatricula não encontrada para o uuid "
+								+ configuracao
+										.getIdSituacaoFrequenciaPresente()));
+
+		FrequenciaAluno frequencia = null;
+
+		// Verifica se já foi registrada frequencia desta matricula
+		frequencia = frequenciaAlunoRepository.obterFrequenciaPorDiaEMatricula(
+				frequenciaDTO.getUuidDiaCalendario(),
+				frequenciaDTO.getUuidMatricula());
+
+		if (frequencia != null) {
+
+			frequencia.setSituacaoFrequencia(situacao);
+
+		} else {
+
+			frequencia = new FrequenciaAluno();
+			frequencia.setDiaAulaCalendario(diaAula);
+			frequencia.setMatricula(matricula);
+			frequencia.setSituacaoFrequencia(situacao);
+		}
+		frequencia.setCriacao(new Metadados());
+
+		frequenciaAlunoRepository.save(frequencia);
+
+	}
+
 	public List<FrequenciaAlunoTurmaEncerramentoDTO> obterFrequenciaAlunoTurmaEncerramento(
 			UUID uuidTurma) {
 
@@ -140,6 +196,15 @@ public class FrequenciaService {
 						frequenciaAlunoRepository
 								.obterFrequenciasPorAluno(uuidMatricula),
 						FrequenciaAlunoConsultaDTO.class);
+
+	}
+
+	public List<FrequenciaAlunoConsultaDTO> obterFrequenciasPorTurmaEDia(
+			UUID uuidTurma, UUID uuidDiaCalendario) {
+		return DozerMapper.parseListObjects(
+				frequenciaAlunoConsultaRepository.obterFrequenciasPorTurmaEDia(
+						uuidTurma, uuidDiaCalendario),
+				FrequenciaAlunoConsultaDTO.class);
 
 	}
 

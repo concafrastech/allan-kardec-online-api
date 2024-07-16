@@ -26,6 +26,7 @@ import com.allankardeconline.globalkardec.model.categoricos.SituacaoMatricula;
 import com.allankardeconline.globalkardec.model.categoricos.VinculoMatricula;
 import com.allankardeconline.globalkardec.repository.DiaAulaCalendarioRepository;
 import com.allankardeconline.globalkardec.repository.MatriculaRepository;
+import com.allankardeconline.globalkardec.repository.MatriculaRepositoryCustomizado;
 import com.allankardeconline.globalkardec.repository.MatriculasTurmaFrequenciaDiaRepository;
 import com.allankardeconline.globalkardec.repository.PessoaRepository;
 import com.allankardeconline.globalkardec.repository.SituacaoFrequenciaRepository;
@@ -42,6 +43,9 @@ public class MatriculaService {
 
 	@Autowired
 	MatriculaRepository repository;
+
+	@Autowired
+	MatriculaRepositoryCustomizado repositoryCustomizado;
 
 	@Autowired
 	PessoaRepository pessoaRepository;
@@ -86,6 +90,17 @@ public class MatriculaService {
 		return pagesDTO;
 	}
 
+	public Page<MatriculaConsultaDTO> obterMatriculasPorParametros(
+			UUID uuidCentroEspirita, UUID uuidCalendario, UUID uuidCurso,
+			String aluno, Long idVinculo, Pageable paginacao) {
+		var page = repositoryCustomizado.pesquisar(uuidCentroEspirita,
+				uuidCalendario, uuidCurso, aluno, idVinculo, paginacao);
+
+		var pagesDTO = page.map(objeto -> DozerMapper.parseObject(objeto,
+				MatriculaConsultaDTO.class));
+		return pagesDTO;
+	}
+
 	public Page<MatriculaConsultaDTO> obterPorNomePessoa(String nomePessoa,
 			Pageable paginacao) {
 		var page = repository.obterMatriculasPorNomePessoa(nomePessoa,
@@ -100,6 +115,22 @@ public class MatriculaService {
 
 		return DozerMapper.parseListObjects(
 				repository.obterMatriculasPorTurma(uuidTurma),
+				MatriculaConsultaDTO.class);
+
+	}
+
+	public List<MatriculaConsultaDTO> obterAtivasPorPessoa(UUID uuidPessoa) {
+
+		return DozerMapper.parseListObjects(
+				repository.obterMatriculasAtivasPorPessoa(uuidPessoa),
+				MatriculaConsultaDTO.class);
+
+	}
+
+	public List<MatriculaConsultaDTO> obterInativasPorPessoa(UUID uuidPessoa) {
+
+		return DozerMapper.parseListObjects(
+				repository.obterMatriculasInativasPorPessoa(uuidPessoa),
 				MatriculaConsultaDTO.class);
 
 	}

@@ -96,6 +96,17 @@ public class TurmaController {
 				.ok(service.obterTodosPorCentro(uuidCentro, paginacao));
 	}
 
+	@GetMapping(value = "/porCalendario/{uuidCalendario}", produces = MediaType.APPLICATION_JSON_VALUE)
+	@Operation(summary = "Retorna todas as turmas por calendário", tags = {
+			"Turma"
+	}, responses = {
+			@ApiResponse
+	})
+	public List<TurmaDTO> obterPorCalendario(@PathVariable UUID uuidCalendario) {
+
+		return service.obterPorCalendario(uuidCalendario);
+	}
+
 	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	@Operation(summary = "Permite o cadastramento de uma nova turma", tags = {
 			"Turma"

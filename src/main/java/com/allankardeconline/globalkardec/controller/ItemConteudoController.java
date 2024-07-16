@@ -34,7 +34,7 @@ public class ItemConteudoController {
 	private ItemConteudoService service;
 
 	@GetMapping(value = "/{uuid}", produces = MediaType.APPLICATION_JSON_VALUE)
-	@Operation(summary = "Retorna um item de conteudo do curso por uuid", tags = {
+	@Operation(summary = "Retorna um item de conteudo por uuid", tags = {
 			"ItemConteudo"
 	}, responses = {
 			@ApiResponse

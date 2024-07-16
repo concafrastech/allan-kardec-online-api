@@ -9,5 +9,5 @@ import com.allankardeconline.globalkardec.model.categoricos.SituacaoFrequencia;
 public interface SituacaoFrequenciaRepository extends JpaRepository<SituacaoFrequencia, Long> {
 
 	List<SituacaoFrequencia> findByNomeLikeIgnoreCase(String nome);
-
+	
 }

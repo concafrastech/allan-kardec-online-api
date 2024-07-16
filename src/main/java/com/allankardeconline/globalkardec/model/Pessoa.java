@@ -6,6 +6,7 @@ import java.util.Objects;
 import java.util.UUID;
 
 import com.allankardeconline.gestaoacesso.model.Usuario;
+import com.allankardeconline.site.model.CentroEspirita;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
@@ -34,6 +35,10 @@ public class Pessoa implements Serializable {
 	private String nome;
 
 	private LocalDate dataNascimento;
+
+	@JoinColumn(name = "centro_espirita_id")
+	@ManyToOne()
+	private CentroEspirita centroEspirita;
 
 	@JoinColumn(name = "contato_id")
 	@ManyToOne(cascade = CascadeType.ALL)
@@ -119,18 +124,27 @@ public class Pessoa implements Serializable {
 		this.usuario = usuario;
 	}
 
+	public CentroEspirita getCentroEspirita() {
+		return centroEspirita;
+	}
+
+	public void setCentroEspirita(CentroEspirita centroEspirita) {
+		this.centroEspirita = centroEspirita;
+	}
+
 	@Override
 	public String toString() {
 		return "Pessoa [id=" + id + ", uuid=" + uuid + ", nome=" + nome
-				+ ", dataNascimento=" + dataNascimento + ", contato=" + contato
-				+ ", endereco=" + endereco + ", idioma=" + idioma + ", usuario="
-				+ usuario + "]";
+				+ ", dataNascimento=" + dataNascimento + ", centroEspirita="
+				+ centroEspirita + ", contato=" + contato + ", endereco="
+				+ endereco + ", idioma=" + idioma + ", usuario=" + usuario
+				+ "]";
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(contato, dataNascimento, endereco, id, idioma, nome,
-				usuario, uuid);
+		return Objects.hash(centroEspirita, contato, dataNascimento, endereco,
+				id, idioma, nome, usuario, uuid);
 	}
 
 	@Override
@@ -142,7 +156,8 @@ public class Pessoa implements Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		Pessoa other = (Pessoa) obj;
-		return Objects.equals(contato, other.contato)
+		return Objects.equals(centroEspirita, other.centroEspirita)
+				&& Objects.equals(contato, other.contato)
 				&& Objects.equals(dataNascimento, other.dataNascimento)
 				&& Objects.equals(endereco, other.endereco)
 				&& Objects.equals(id, other.id)

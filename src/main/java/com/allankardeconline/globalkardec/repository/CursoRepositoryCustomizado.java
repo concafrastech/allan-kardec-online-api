@@ -63,7 +63,7 @@ public class CursoRepositoryCustomizado {
 
 		List<Curso> cursos = typed.getResultList();
 
-		long total = curso.length();
+		long total = cursos.size();
 		return new PageImpl<Curso>(cursos, paginacao, total);
 
 	}

@@ -12,6 +12,8 @@ import com.allankardeconline.globalkardec.model.Calendario;
 public interface CalendarioRepository extends JpaRepository<Calendario, Long> {
 
 	Optional<Calendario> findByUuid(UUID uuid);
+	
+	List<Calendario> findAll();
 
 	@Query("SELECT o from Calendario o WHERE o.centroEspirita.uuid = :uuidCentro order by o.id DESC")
 	List<Calendario> obterTodosPorCentro(UUID uuidCentro);

@@ -27,6 +27,7 @@ public interface PessoaRepository extends JpaRepository<Pessoa, Long> {
 			+ " OR lower(o.contato.telefone) = lower(:telefone)")
 	List<Pessoa> findByEmailOrTelefone(String email, String telefone);
 
+
 	@Query("SELECT o from Pessoa o WHERE o.usuario.centroEspirita.uuid = :uuidCentro order by o.nome ASC")
 	Page<Pessoa> obterTodosPorCentro(UUID uuidCentro, Pageable paginacao);
 

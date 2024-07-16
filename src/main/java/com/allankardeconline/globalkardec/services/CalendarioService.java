@@ -48,6 +48,12 @@ public class CalendarioService {
 				repository.obterTodosPorCentro(uuidCentro),
 				CalendarioDTO.class);
 	}
+	
+	public List<CalendarioDTO> obterTodos() {
+		return DozerMapper.parseListObjects(
+				repository.findAll(),
+				CalendarioDTO.class);
+	}
 
 	public List<DiaAulaDTO> obterDiasAulaPorCalendario(UUID uuidCalendario) {
 		return DozerMapper.parseListObjects(diaAulaCalendarioRepository

@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.util.Objects;
 import java.util.UUID;
 
+import com.github.dozermapper.core.Mapping;
+
 import jakarta.validation.constraints.NotNull;
 
 public class CalendarioDTO implements Serializable {
@@ -14,6 +16,12 @@ public class CalendarioDTO implements Serializable {
 	private static final long serialVersionUID = -6178430595442137362L;
 
 	private UUID uuid;
+	
+	@Mapping(value = "centroEspirita.uuid")
+	private UUID uuidCentro;
+	
+	@Mapping(value = "centroEspirita.nome")
+	private String centro;
 
 	@NotNull(message = "{campo.semestre.obrigatorio}")
 	private int semestre;
@@ -49,15 +57,25 @@ public class CalendarioDTO implements Serializable {
 		this.ano = ano;
 	}
 
-	@Override
-	public String toString() {
-		return "CalendarioDTO [uuid=" + uuid + ", semestre=" + semestre
-				+ ", ano=" + ano + "]";
+	public UUID getUuidCentro() {
+		return uuidCentro;
+	}
+
+	public void setUuidCentro(UUID uuidCentro) {
+		this.uuidCentro = uuidCentro;
+	}
+
+	public String getCentro() {
+		return centro;
+	}
+
+	public void setCentro(String centro) {
+		this.centro = centro;
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(ano, semestre, uuid);
+		return Objects.hash(ano, centro, semestre, uuid, uuidCentro);
 	}
 
 	@Override
@@ -69,8 +87,19 @@ public class CalendarioDTO implements Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		CalendarioDTO other = (CalendarioDTO) obj;
-		return ano == other.ano && semestre == other.semestre
-				&& Objects.equals(uuid, other.uuid);
+		return ano == other.ano && Objects.equals(centro, other.centro)
+				&& semestre == other.semestre
+				&& Objects.equals(uuid, other.uuid)
+				&& Objects.equals(uuidCentro, other.uuidCentro);
 	}
+
+	@Override
+	public String toString() {
+		return "CalendarioDTO [uuid=" + uuid + ", uuidCentro=" + uuidCentro
+				+ ", centro=" + centro + ", semestre=" + semestre + ", ano="
+				+ ano + "]";
+	}
+
+	
 
 }

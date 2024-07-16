@@ -46,7 +46,7 @@ public class CalendarioController {
 	}
 
 	@GetMapping(value = "/porCentro/{uuidCentro}", produces = MediaType.APPLICATION_JSON_VALUE)
-	@Operation(summary = "Retorna todos os calendarios por Centro", tags = {
+	@Operation(summary = "Retorna todos os calendarios por CENTRO", tags = {
 			"Calendario"
 	}, responses = {
 			@ApiResponse
@@ -54,6 +54,16 @@ public class CalendarioController {
 	public List<CalendarioDTO> obterTodosPorCentro(
 			@PathVariable UUID uuidCentro) {
 		return service.obterTodosPorCentro(uuidCentro);
+	}
+
+	@GetMapping( produces = MediaType.APPLICATION_JSON_VALUE)
+	@Operation(summary = "Retorna todos os calendarios", tags = {
+			"Calendario"
+	}, responses = {
+			@ApiResponse
+	})
+	public List<CalendarioDTO> obterTodos() {
+		return service.obterTodos();
 	}
 
 	@GetMapping(value = "/dia/{uuidCalendario}", produces = MediaType.APPLICATION_JSON_VALUE)

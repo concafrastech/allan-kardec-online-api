@@ -13,9 +13,12 @@ public class ConfiguracaoGeralGlobalKardec {
 
 	@Value("${ceoak.vinculo-aluno}")
 	private Long idMatriculaVinculoAluno;
-	
+
 	@Value("${ceoak.situacao-matriculado}")
 	private Long idSituacaoMatriculado;
+
+	@Value("${ceoak.situacao-frequencia-presente}")
+	private Long idSituacaoFrequenciaPresente;
 
 	public String getUuidCeoak() {
 		return uuidCeoak;
@@ -41,10 +44,19 @@ public class ConfiguracaoGeralGlobalKardec {
 		this.idSituacaoMatriculado = idSituacaoMatriculado;
 	}
 
+	public Long getIdSituacaoFrequenciaPresente() {
+		return idSituacaoFrequenciaPresente;
+	}
+
+	public void setIdSituacaoFrequenciaPresente(
+			Long idSituacaoFrequenciaPresente) {
+		this.idSituacaoFrequenciaPresente = idSituacaoFrequenciaPresente;
+	}
+
 	@Override
 	public int hashCode() {
-		return Objects.hash(idMatriculaVinculoAluno, idSituacaoMatriculado,
-				uuidCeoak);
+		return Objects.hash(idMatriculaVinculoAluno,
+				idSituacaoFrequenciaPresente, idSituacaoMatriculado, uuidCeoak);
 	}
 
 	@Override
@@ -58,10 +70,11 @@ public class ConfiguracaoGeralGlobalKardec {
 		ConfiguracaoGeralGlobalKardec other = (ConfiguracaoGeralGlobalKardec) obj;
 		return Objects.equals(idMatriculaVinculoAluno,
 				other.idMatriculaVinculoAluno)
+				&& Objects.equals(idSituacaoFrequenciaPresente,
+						other.idSituacaoFrequenciaPresente)
 				&& Objects.equals(idSituacaoMatriculado,
 						other.idSituacaoMatriculado)
 				&& Objects.equals(uuidCeoak, other.uuidCeoak);
 	}
 
-		
 }

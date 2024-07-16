@@ -11,6 +11,7 @@ ceoak:
   codigo-padrao: 84d13166-39cf-11ed-9067-706979ac0e21
   vinculo-aluno: 1
   situacao-matriculado: 1
+  situacao-frequencia-presente: 1
   
 arquivo:
   upload-dir: /var/arquivos/	

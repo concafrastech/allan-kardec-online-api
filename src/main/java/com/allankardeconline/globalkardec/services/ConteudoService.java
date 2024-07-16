@@ -14,6 +14,8 @@ import com.allankardeconline.globalkardec.model.Conteudo;
 import com.allankardeconline.globalkardec.repository.ConteudoRepository;
 import com.allankardeconline.globalkardec.repository.CursoRepository;
 
+import jakarta.transaction.Transactional;
+
 @Service
 public class ConteudoService {
 
@@ -56,6 +58,27 @@ public class ConteudoService {
 				ConteudoDTO.class);
 
 		return dto;
+
+	}
+
+	@Transactional
+	public void inserirLote(List<ConteudoDTO> conteudos) {
+
+		conteudos.forEach(conteudo -> {
+
+			var curso = cursoRepository.findByUuid(conteudo.getCurso())
+					.orElseThrow(() -> new RecursoNaoEncontradoException(
+							"Curso não encontrado para o uuid "
+									+ conteudo.getCurso()));
+
+			var entity = DozerMapper.parseObject(conteudo, Conteudo.class);
+
+			entity.setUuid(UUID.randomUUID());
+			entity.setCurso(curso);
+
+			repository.save(entity);
+
+		});
 
 	}
 

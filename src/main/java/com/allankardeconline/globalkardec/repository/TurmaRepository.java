@@ -1,5 +1,6 @@
 package com.allankardeconline.globalkardec.repository;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -20,7 +21,10 @@ public interface TurmaRepository extends JpaRepository<Turma, Long> {
 
 	@Query("SELECT o from Turma o WHERE o.calendario.centroEspirita.uuid = :uuidCentro"
 			+ " AND lower(o.curso.nome) like lower(concat('%', :curso,'%'))")
-	Page<Turma> obterPorCentroENomeCurso(UUID uuidCentro, String curso, Pageable paginacao);
-	
+	Page<Turma> obterPorCentroENomeCurso(UUID uuidCentro, String curso,
+			Pageable paginacao);
 
+	@Query("SELECT o from Turma o WHERE o.calendario.uuid = :uuidCalendario"
+			+ " order by o.calendario.ano DESC , o.calendario.semestre DESC , o.curso.nome ASC")
+	List<Turma> obterPorCalendario(UUID uuidCalendario);
 }

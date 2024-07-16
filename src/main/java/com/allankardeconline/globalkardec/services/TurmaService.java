@@ -63,17 +63,6 @@ public class TurmaService {
 	@Autowired
 	ConfiguracaoGlobalKardecRepository configuracaoGlobalKardecRepository;
 
-//	public List<TurmaDTO> pesquisarPorExemplo(TurmaDTO filtro) {
-//		ExampleMatcher matcher = ExampleMatcher.matching().withIgnoreCase()
-//				.withStringMatcher(StringMatcher.CONTAINING);
-//
-//		var entidade = DozerMapper.parseObject(filtro, Turma.class);
-//
-//		Example<Turma> exemplo = Example.of(entidade, matcher);
-//		return DozerMapper.parseListObjects(repository.findAll(exemplo),
-//				TurmaDTO.class);
-//
-//	}
 
 	public Page<TurmaDTO> obterTodosPorCentro(UUID uuidCentro,
 			Pageable paginacao) {
@@ -94,6 +83,16 @@ public class TurmaService {
 		var pagesDTO = page
 				.map(objeto -> DozerMapper.parseObject(objeto, TurmaDTO.class));
 		return pagesDTO;
+
+	}
+	
+	
+	public List<TurmaDTO> obterPorCalendario(UUID uuidCalendario) {
+
+		return DozerMapper.parseListObjects(
+				repository.obterPorCalendario(uuidCalendario),
+				TurmaDTO.class);
+
 
 	}
 

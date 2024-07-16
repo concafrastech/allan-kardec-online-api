@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import com.allankardeconline.gestaoacesso.model.Usuario;
 import com.allankardeconline.globalkardec.dto.PessoaCadastroDTO;
+import com.allankardeconline.globalkardec.dto.PessoaConsultaDTO;
 import com.allankardeconline.globalkardec.dto.PessoaDTO;
 import com.allankardeconline.globalkardec.excecoes.DuplicidadeException;
 import com.allankardeconline.globalkardec.excecoes.InformacaoObrigatoriaException;
@@ -25,6 +26,7 @@ import com.allankardeconline.globalkardec.repository.CentroEspiritaRepository;
 import com.allankardeconline.globalkardec.repository.CidadeRepository;
 import com.allankardeconline.globalkardec.repository.IdiomaRepository;
 import com.allankardeconline.globalkardec.repository.PessoaRepository;
+import com.allankardeconline.globalkardec.repository.PessoaRepositoryCustomizado;
 import com.allankardeconline.site.model.CentroEspirita;
 
 @Service
@@ -34,6 +36,9 @@ public class PessoaService {
 
 	@Autowired
 	PessoaRepository repository;
+
+	@Autowired
+	PessoaRepositoryCustomizado repositoryCustomizado;
 
 	@Autowired
 	IdiomaRepository idiomaRepository;
@@ -63,8 +68,7 @@ public class PessoaService {
 		return pagesDTO;
 
 	}
-	
-	
+
 	public Page<PessoaDTO> obterPorCentro(UUID centro, Pageable paginacao) {
 
 		var page = repository.obterTodosPorCentro(centro, paginacao);
@@ -81,6 +85,15 @@ public class PessoaService {
 		return DozerMapper.parseListObjects(
 				repository.findByEmailOrTelefone(email, telefone),
 				PessoaDTO.class);
+
+	}
+
+	public List<PessoaConsultaDTO> obterPorCentroENomeOUEmailOUTelefone(
+			UUID uuidCentro, String campoBusca) {
+
+		return DozerMapper.parseListObjects(repositoryCustomizado
+				.obterPorCentroENomeOuEmailOuTelefone(uuidCentro, campoBusca),
+				PessoaConsultaDTO.class);
 
 	}
 

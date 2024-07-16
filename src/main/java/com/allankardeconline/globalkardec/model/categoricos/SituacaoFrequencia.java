@@ -63,5 +63,11 @@ public class SituacaoFrequencia implements Serializable {
 		return Objects.equals(id, other.id) && Objects.equals(nome, other.nome);
 	}
 
+	@Override
+	public String toString() {
+		return "SituacaoFrequencia [id=" + id + ", nome=" + nome + "]";
+	}
+
+
 	
 }

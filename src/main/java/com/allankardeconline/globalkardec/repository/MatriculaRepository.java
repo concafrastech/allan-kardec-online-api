@@ -34,6 +34,12 @@ public interface MatriculaRepository extends JpaRepository<Matricula, Long> {
 
 	@Query("SELECT o FROM Matricula o WHERE o.turma.uuid = :uuidTurma order by o.dataInicio DESC")
 	List<Matricula> obterMatriculasPorTurma(UUID uuidTurma);
+	
+	@Query("SELECT o FROM Matricula o WHERE o.dataEncerramento is null AND o.pessoa.uuid = :uuidPessoa order by o.dataInicio DESC")
+	List<Matricula> obterMatriculasAtivasPorPessoa(UUID uuidPessoa);
+	
+	@Query("SELECT o FROM Matricula o WHERE o.dataEncerramento is not null AND o.pessoa.uuid = :uuidPessoa order by o.dataInicio DESC")
+	List<Matricula> obterMatriculasInativasPorPessoa(UUID uuidPessoa);
 
 	@Query("SELECT o FROM Matricula o WHERE o.turma.uuid = :uuidTurma AND o.pessoa.uuid = :uuidPessoa")
 	Matricula obterMatriculaPorTurmaEPessoa(UUID uuidTurma, UUID uuidPessoa);

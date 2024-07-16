@@ -51,7 +51,7 @@ public class MatriculaController {
 		return service.obterPorUuid(uuid);
 	}
 
-	@GetMapping(value = "/porPessoa/{uuidPessoa}", produces = MediaType.APPLICATION_JSON_VALUE)
+	@GetMapping(value = "/porPessoa/todas/{uuidPessoa}", produces = MediaType.APPLICATION_JSON_VALUE)
 	@Operation(summary = "Matriculas (todas) por uuid da pessoa", tags = {
 			"Matricula"
 	}, responses = {
@@ -65,6 +65,51 @@ public class MatriculaController {
 		Pageable paginacao = PageRequest.of(pagina, limite);
 
 		return service.obterPorPessoa(uuidPessoa, paginacao);
+	}
+
+	@GetMapping(value = "/pesquisar", produces = MediaType.APPLICATION_JSON_VALUE)
+	@Operation(summary = "Matriculas por parâmetros de pesquisa", tags = {
+			"Matricula"
+	}, responses = {
+			@ApiResponse
+	})
+	public Page<MatriculaConsultaDTO> obterPorParametrosPesquisa(
+			@RequestParam(name = "uuidCentroEspirita", defaultValue = "") UUID uuidCentroEspirita,
+			@RequestParam(name = "uuidCalendario", defaultValue = "") UUID uuidCalendario,
+			@RequestParam(name = "uuidCurso", defaultValue = "") UUID uuidCurso,
+			@RequestParam(name = "aluno", defaultValue = "") String aluno,
+			@RequestParam(name = "idVinculo", defaultValue = "") Long idVinculo,
+			@RequestParam(value = "pagina", defaultValue = "0") Integer pagina,
+			@RequestParam(value = "limite", defaultValue = "10") Integer limite) {
+
+		Pageable paginacao = PageRequest.of(pagina, limite);
+
+		return service.obterMatriculasPorParametros(uuidCentroEspirita,
+				uuidCalendario, uuidCurso, aluno, idVinculo, paginacao);
+	}
+
+	@GetMapping(value = "/porPessoa/vigente/{uuidPessoa}", produces = MediaType.APPLICATION_JSON_VALUE)
+	@Operation(summary = "Matriculas VIGENTES por pessoa", tags = {
+			"Matricula"
+	}, responses = {
+			@ApiResponse
+	})
+	public List<MatriculaConsultaDTO> obterMatriculasVigentesPorPessoa(
+			@PathVariable UUID uuidPessoa) {
+
+		return service.obterAtivasPorPessoa(uuidPessoa);
+	}
+
+	@GetMapping(value = "/porPessoa/historico/{uuidPessoa}", produces = MediaType.APPLICATION_JSON_VALUE)
+	@Operation(summary = "Matriculas VIGENTES por pessoa", tags = {
+			"Matricula"
+	}, responses = {
+			@ApiResponse
+	})
+	public List<MatriculaConsultaDTO> obterMatriculasHistoricoPorPessoa(
+			@PathVariable UUID uuidPessoa) {
+
+		return service.obterInativasPorPessoa(uuidPessoa);
 	}
 
 	@GetMapping(value = "/ativo/{uuidPessoa}", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -99,7 +144,6 @@ public class MatriculaController {
 		return service.obterPorNomePessoa(nome, paginacao);
 	}
 
-	// obterMatriculasPorTurma
 	@GetMapping(value = "/porTurma/{uuidTurma}", produces = MediaType.APPLICATION_JSON_VALUE)
 	@Operation(summary = "Matriculas por turma", tags = {
 			"Matricula"

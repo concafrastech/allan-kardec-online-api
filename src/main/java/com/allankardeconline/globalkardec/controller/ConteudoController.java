@@ -53,8 +53,19 @@ public class ConteudoController {
 		return service.obterTodosPorCurso(cursoUuid);
 	}
 
+	@PostMapping(value = "lote", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@Operation(summary = "Permite o cadastramento de uma lista de conteudos", tags = {
+			"Conteudo"
+	}, responses = {
+			@ApiResponse
+	})
+	@ResponseStatus(HttpStatus.CREATED)
+	public void inserirLote(@RequestBody @Valid List<ConteudoDTO> conteudos) {
+		service.inserirLote(conteudos);
+	}
+
 	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	@Operation(summary = "Permite o cadastramento de uma novo conteudo de conteudo", tags = {
+	@Operation(summary = "Permite o cadastramento de um novo conteudo", tags = {
 			"Conteudo"
 	}, responses = {
 			@ApiResponse

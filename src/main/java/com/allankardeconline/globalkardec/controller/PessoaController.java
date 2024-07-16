@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.allankardeconline.globalkardec.dto.PessoaCadastroDTO;
+import com.allankardeconline.globalkardec.dto.PessoaConsultaDTO;
 import com.allankardeconline.globalkardec.dto.PessoaDTO;
 import com.allankardeconline.globalkardec.services.PessoaService;
 
@@ -75,6 +76,20 @@ public class PessoaController {
 			@RequestParam(name = "telefone", defaultValue = "") String telefone) {
 
 		return service.obterPorEmailOUTelefone(email, telefone);
+	}
+
+	@GetMapping(value = "/porCentro/{uuidCentro}/porNomeOuEmailOuTelefone", produces = MediaType.APPLICATION_JSON_VALUE)
+	@Operation(summary = "Lista de pessoas de um centro filtradas por Nome E/OU E-mail E/OU Telefone", tags = {
+			"Pessoa"
+	}, responses = {
+			@ApiResponse
+	})
+	public List<PessoaConsultaDTO> obterPorCentroENomeOUEmailOUTelefone(
+			@PathVariable UUID uuidCentro,
+			@RequestParam(name = "campoBusca", defaultValue = "") String campoBusca) {
+
+		return service.obterPorCentroENomeOUEmailOUTelefone(uuidCentro,
+				campoBusca);
 	}
 
 	@GetMapping(value = "/porCentro/{uuidCentro}", produces = MediaType.APPLICATION_JSON_VALUE)
